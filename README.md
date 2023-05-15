@@ -7,4 +7,4 @@ A simple Backend approach of generating a REST API that facilitates an easy and 
 3. Based on the "Routes.js" there are various routes to handle corresponding requests (and the corresponding responses is at "Controllers->Controller.js").
 4. Recommend to test the API using Postman or thunder client (Extensions also exist in Visual Studio).
 
-                                                                          Enjoy (づ｡◕‿‿◕｡)づ   and   Happy Coding (▀̿Ĺ̯▀̿ ̿)
+Enjoy (づ｡◕‿‿◕｡)づ   and   Happy Coding (▀̿Ĺ̯▀̿ ̿)
