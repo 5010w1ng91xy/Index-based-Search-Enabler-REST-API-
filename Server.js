@@ -22,15 +22,14 @@ app.use((req,res,next)=>
 app.use('/api/Movie',movieroutes)         //We established a link based on the corresponding '/' present in Routes.js 
 
 //Listen for Requests at PORT as well as connection to MongoDB
-const start = async () => {
-    try{
-        await connectDB();                //Function call to Connect.js to Establish Connection to MongoDB
-        app.listen(process.env.PORT, () => {
+connectDB().then(() =>                    //Function call to Connect.js to Establish Connection to MongoDB
+    {
+        app.listen(process.env.PORT, () => 
+        {
             console.log("Backend Server at PORT:",process.env.PORT)
         })
-    } 
-        catch(error){
-            console.log(error)
-        } 
-}
-start()
+    })
+    .catch((error) =>
+    {
+        console.log(error)
+    })
