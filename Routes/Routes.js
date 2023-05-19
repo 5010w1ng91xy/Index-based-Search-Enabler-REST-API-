@@ -12,7 +12,7 @@ const {
       }=require('../Controllers/Controllers')             //Makes a link to Controllers so as to use all Functions (GET,POST,DELETE,UPDATE,etc.)
 
 //GET all Movies
-router.get('/', getallmovies)                             //Gets all the Workout Documents by Performing a Call to the Function 'getmovies' present at Controllers
+router.get('/', getallmovies)
 
 //GET Movies based on field:Value
 router.get('/Search',getmovie)
