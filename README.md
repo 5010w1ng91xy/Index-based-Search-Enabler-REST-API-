@@ -9,8 +9,8 @@
 5. Recommend to test the API using Postman or Thunder Client, etc. (Extensions also avaialble in Visual Studio).
 
 ## ***API TESTING***
-1. After successfully running the code, you can test this API using appications such as Postman, Thunder Client, etc (Here we Illustrate using Postman).
-2. This API has about 8 requests set on *Routes.js* file, here we can show to run these requests on Postman (__NOTE: *All Responses* are also shown in the Code's _Terminal___).
+1. After successfully running the code, you can test this API using applications such as Postman, Thunder Client, etc. (Here we Illustrate using Postman).
+2. This API has 8 requests set on *Routes.js* file, here we can show how to run these requests on Postman (__NOTE: *All Responses* are also shown in the Code's _Terminal___).
   ### A. To Get All Documents ***"localhost:5000/api/Movie/"***
   ![image](https://github.com/5010w1ng91xy/Index-based-Search-Enabler-REST-API-/assets/110966686/e689a87e-d87c-4177-a490-7025b3cdf6ab)
   
