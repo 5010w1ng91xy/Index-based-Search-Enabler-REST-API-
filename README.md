@@ -25,12 +25,12 @@
   ![image](https://github.com/5010w1ng91xy/Index-based-Search-Enabler-REST-API-/assets/110966686/bc7732d5-e385-423c-ac43-19d3003f5726)
 
   ### D. To Update an Existing Document ***"localhost:5000/api/Movie/ModMovie/'Document Name'"***
-  
-  ![image](https://github.com/5010w1ng91xy/Index-based-Search-Enabler-REST-API-/assets/110966686/06aa08c5-10c7-41ed-b67c-1e3f5ee3cf61)
+
+  ![image](https://github.com/5010w1ng91xy/Index-based-Search-Enabler-REST-API-/assets/110966686/942fd750-a854-4569-88ad-00e78ec10035)
 
   ### E. To Delete Existing Document(s) ***"localhost:5000/api/Movie/DeleteMovie?'field1'='value1'&'field2'='value2'"***
   
-  ![image](https://github.com/5010w1ng91xy/Index-based-Search-Enabler-REST-API-/assets/110966686/8fe5557b-d535-45b2-a8c2-dba240e59338)
+  ![image](https://github.com/5010w1ng91xy/Index-based-Search-Enabler-REST-API-/assets/110966686/2acfc4bb-2874-4090-aa93-c61b1a1611d5)
 
   ### F. To Get All Existing Indexes ***"localhost:5000/api/Movie/Index/"***
   
@@ -38,11 +38,14 @@
 
   ### G. To Add New Index(es) ***"localhost:5000/api/Movie/Index/"***
   
-  ![image](https://github.com/5010w1ng91xy/Index-based-Search-Enabler-REST-API-/assets/110966686/ec3328b6-c7f0-43f7-8ced-dec85ef08be8)
+  ![image](https://github.com/5010w1ng91xy/Index-based-Search-Enabler-REST-API-/assets/110966686/65f7447e-d0f7-42e3-a38a-431b4b4434f0)
+  
+  **NOTE: Now that you have created Indexes, again try to perform some search query that has similar fileds that of the created Indexes and now check out the _"executionTimeMillis"_**
 
   ### H. To Delete Existing Index(es) ***"localhost:5000/api/Movie/DeleteIndex/"***
   
-  ![image](https://github.com/5010w1ng91xy/Index-based-Search-Enabler-REST-API-/assets/110966686/3ba205b8-cb8d-4738-b20b-fe3383e7004c)
+  ![image](https://github.com/5010w1ng91xy/Index-based-Search-Enabler-REST-API-/assets/110966686/49aa479d-691e-4e8a-9be5-d3641af8c755)
+
 
 ```diff 
 ! Enjoy (づ｡◕‿‿◕｡)づ   &&   Happy Coding (▀̿Ĺ̯▀̿ ̿)  !
