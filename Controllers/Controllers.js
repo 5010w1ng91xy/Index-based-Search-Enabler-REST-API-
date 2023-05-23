@@ -1,4 +1,4 @@
-const moviestructure=require('../Model/Structure')                                        //Making a link to the Model
+const moviestructure = require('../Model/Structure')                                      //Making a link to the Model as well as indireclty to MongoDB
 
 //GET all Movies
 const getallmovies = async (req,res) =>{                                                  //NOTE: it's req first then res (Maintain Order)
@@ -6,7 +6,7 @@ const getallmovies = async (req,res) =>{                                        
     res.status(200).json({allmovies})
 } 
 
-//GET a Single Movie based on 'field' and 'Value'
+//GET a Single Movie based on 'field' and 'Value', NOTE: If you Don't send any query It wil defaultly GET All Movie Docs
 const getmovie = async (req,res) => {
     let results = []                                                                      //Empty Array (We will 'push' the follwing results into it)
 
@@ -16,10 +16,10 @@ const getmovie = async (req,res) => {
         return res.status(404).json({error: 'No Such Documents Exist'})                   //Use 'return' or else the remaining code within this block will be executed unnecessary
     }
 
-    const movie = await moviestructure.find(req.query)                              //Based on the 'query' we type on Postman we get the Results, NOTE: Takes the Searched Document
+    const movie = await moviestructure.find(req.query)                                    //Based on the 'query' we type on Postman we get the Results, NOTE: Takes the Searched Document
     results.push(movie)
 
-    const stats=await moviestructure.find(req.query).explain('executionStats')            //Gets the ExecutionStats of the Search Query
+    const stats = await moviestructure.find(req.query).explain('executionStats')          //Gets the ExecutionStats of the Search Query
     results.push(stats)
 
     console.log(`Number of Documents examined: ${stats.executionStats.totalDocsExamined}`)
@@ -30,10 +30,10 @@ const getmovie = async (req,res) => {
 }
 
 //POST a New Movies
-const addmovie=async(req,res)=>
+const addmovie = async(req,res) =>
 {
     const {plot,genres,runtime,cast,poster,title,fullplot,languages,released,directors,writers,rated,awards,lastupdated,year,imdb,countries,type,tomatoes,comments}=req.body            //Any Foreign fields won't be taken
-    let emptyfields=[]                                                                     //Checks for any Missing Fields while Entering new Workout Doc
+    let emptyfields = []                                                                  //Checks for any Missing Fields while Entering new Workout Doc
     if(!plot){emptyfields.push('plot')}
     if(!genres){emptyfields.push('genres')}
     if(!runtime){emptyfields.push('runtime')}
@@ -55,38 +55,61 @@ const addmovie=async(req,res)=>
     //if(!tomatoes){emptyfields.push('tomatoes')}
     //if(!comments){emptyfields.push('comments')}
 
-    if(emptyfields.length != 0){
+    if(emptyfields.length != 0)
+    {
         console.log(`Please Fill in all Criterias based on their Data Types`)
         //Drops a message along will all the missing Fields to be Filled
         return res.status(400).json({error:'Please Fill in all Criterias based on their Data Types', emptyfields})
     }
 
     //Add a Movie Document to the DB 
-    try{
+    try
+    {
         //Asynchronously Creates a new Movie Document with the followong fields
         const newmovie = await moviestructure.create({plot,genres,runtime,cast,poster,title,fullplot,languages,released,directors,writers,rated,awards,lastupdated,year,imdb,countries,type,tomatoes,comments})
         res.status(200).json(newmovie)                               //200 means it's functioning fine
         console.log(`New Movie "${newmovie.title}" Addition Success`)
     }
-    catch(error){
-        res.status(400).json({error: error.message})                //400 means an error
+    catch(error)
+    {
+        res.status(400).json({error: error.message})                 //400 means an error
     }
 }
 
-//UPDATE a Movie Based on Movie Name
-const updatemovie = async (req,res) => {
+//UPDATE a Movie Based on Movie Name aka title
+const updatemovie = async (req,res) => 
+{
     const {title} = req.params
+    const changes = req.body
     try{
-        const changemovie = await moviestructure.findOneAndUpdate({title:title},
+        const movietochange = await moviestructure.findOneAndUpdate({title:title},
             {
-                ...req.body
+                ...changes
             })
-            if(!changemovie){
+
+            if(!movietochange)
+            {
                 console.log('Movie Does not Exists')
                 return res.status(200).json({errror:'Movie Does not Exists'})
             }
+
+              //To make a Detailed log of Changed Fields
+              const Changedfields = {}
+              for (const field in changes)
+              {
+                  if (movietochange[field] !== changes)
+                  {
+                      Changedfields[field] = 
+                      {
+                          OldValue: movietochange[field],
+                          NewValue: changes[field]
+                      }
+                  }
+              }
+
             console.log(`"${title}" Movie Updation Success`)
-            res.status(200).json(changemovie)
+            console.log(`The Updated Fields are:`,Changedfields)
+            res.status(200).json({"The Updated Fields":Changedfields,"Old Movie":movietochange})
         }
         catch(error)
         {
@@ -97,11 +120,11 @@ const updatemovie = async (req,res) => {
 
 //DELETE a Movie Based on Movie Name, NOTE: if You DELETE without any query ALL docs will be DELETED
 const deletemovie = async (req,res) => {
-    const removemovie=await moviestructure.deleteMany(req.query)         //Can use deleteOne() to Delete One Documrent at a Time
+    const removemovie = await moviestructure.deleteMany(req.query)         //Can use deleteOne() to Delete One Documrent at a Time
     if(!removemovie.deletedCount)
     {
         console.log(`No such Movie Exists`)
-        return res.status(400).json({error: 'No such Movie Exists'})     //Use 'return' or else the remaining code within this block will be executed unnecessary
+        return res.status(400).json({error: 'No such Movie Exists'})       //Use 'return' or else the remaining code within this block will be executed unnecessary
     }
     console.log(`Deletion Success, Documents Deleted:`,removemovie.deletedCount)
     res.status(200).json(removemovie)
@@ -117,12 +140,12 @@ const getallindexes = async (req,res) => {
 
 //POST an Index (Single or Compound along with your own index names)
 const addindex = async (req,res) => {
-    const indexes = req.body.indexes
+    const {indexes} = req.body                                             //Alternate way to initialise: const indexes = req.body.indexes
     try
     {
-        await moviestructure.collection.createIndexes(indexes)
-        console.log('Index Creation Success')
-        res.status(200).send("Index Creation Success")
+        const createIndexes = await moviestructure.collection.createIndexes(indexes)
+        console.log('Index Creation Success:',createIndexes)
+        res.status(200).json({"Newly Created Indexes":createIndexes})
     }
     catch(error)
     {
@@ -131,11 +154,11 @@ const addindex = async (req,res) => {
     }
     }
 
-//DELETE an Index (Based on Index names)
+//DELETE an Index (Based on Index names) NOTE: Similar to the POST index Function we can also implement for the Delete Indexes using dropIndexes(indexes) (I did this as an alternative Method)
 const deleteindex = async (req,res) => {
     const indexes = req.body.indexes
     try{
-        for (let i=0; i < indexes.length; i++)                      //Can aslo make use of dropIndexes to avoid the use of loop
+        for (let i=0; i < indexes.length; i++)                             //Can aslo make use of dropIndexes to avoid the use of loop
         {
             await moviestructure.collection.dropIndex(indexes[i])
             console.log(`The Index "${indexes[i]}" is Deleted`)
@@ -148,8 +171,7 @@ const deleteindex = async (req,res) => {
     }
 }
 
-
-module.exports={
+module.exports = {
     getallmovies,
     getmovie,
     addmovie,
@@ -158,4 +180,4 @@ module.exports={
     addindex,
     getallindexes,
     deleteindex
-}                                                     //Export Function to Routes as the main POST Function
+}                                                                          //Export Function to Routes as the Response Function
